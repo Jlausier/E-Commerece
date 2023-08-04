@@ -41,26 +41,7 @@ router.get('/:id', async (req, res) => {
 
 // POST create a new product
 router.post('/', async (req, res) => {
-  try {
-    const { product_name, price, stock, tagIds } = req.body;
-    const newProduct = await Product.create({ product_name, price, stock });
-
-    if (tagIds && tagIds.length) {
-      // Create product tag associations if tagIds are provided
-      const productTagIdArr = tagIds.map((tag_id) => {
-        return {
-          product_id: newProduct.id,
-          tag_id,
-        };
-      });
-      await ProductTag.bulkCreate(productTagIdArr);
-    }
-
-    res.status(201).json(newProduct);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json(error);
-  }
+ 
   Product.create(req.body)
   .then((product) => {
     // if there's product tags, we need to create pairings to bulk create in the ProductTag model
