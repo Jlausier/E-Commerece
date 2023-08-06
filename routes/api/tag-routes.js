@@ -59,7 +59,10 @@ router.put("/:id", async (req, res) => {
       return res.status(404).json({ message: "Tag not found" });
     }
 
+    // Update the tag_name property of the tag
     tag.tag_name = tag_name;
+
+    // Save the updated tag to the database
     await tag.save();
 
     res.json(tag);
@@ -68,7 +71,6 @@ router.put("/:id", async (req, res) => {
     res.status(400).json({ error: "Bad request" });
   }
 });
-
 // DELETE a tag by its `id` value
 router.delete("/:id", async (req, res) => {
   try {

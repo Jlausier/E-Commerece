@@ -42,27 +42,34 @@ router.get('/:id', async (req, res) => {
 // POST create a new product
 router.post('/', async (req, res) => {
  
-  Product.create(req.body)
-  .then((product) => {
-    // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-    if (req.body.tagIds.length) {
-      const productTagIdArr = req.body.tagIds.map((tag_id) => {
+  try {
+    const { name, price, description, tagIds } = req.body;
+
+    // Create a new product with the provided data
+    const newProduct = await Product.create({
+      product_name: name,
+      price,
+      description,
+    });
+
+    // If there are product tags, create pairings in the ProductTag model
+    if (tagIds && tagIds.length) {
+      const productTagIdArr = tagIds.map((tag_id) => {
         return {
-          product_id: product.id,
+          product_id: newProduct.id,
           tag_id,
         };
       });
-      return ProductTag.bulkCreate(productTagIdArr);
+      await ProductTag.bulkCreate(productTagIdArr);
     }
-    // if no product tags, just respond
-    res.status(200).json(product);
-  })
-  .then((productTagIds) => res.status(200).json(productTagIds))
-  .catch((err) => {
-    console.log(err);
-    res.status(400).json(err);
-  });
+
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Bad request' });
+  }
 });
+
 
 
 // PUT update a product by its `id` value
