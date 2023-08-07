@@ -19,7 +19,10 @@ This project is licensed under the [MIT](https://opensource.org/licenses/MIT) Li
   use npm i
   
   ## Usage
-  you can run using npm start
+  you can run using npm run seeds and then npm start both in the cli
+
+  https://drive.google.com/file/d/1wjJIM3AHqBGIBWhbU3dGWY9Hc4nShwmE/view
+  
 
   
   
